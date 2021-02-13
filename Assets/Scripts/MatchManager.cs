@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MatchManager : MonoBehaviour
 {
@@ -15,22 +16,31 @@ public class MatchManager : MonoBehaviour
     public CanvasGroup GameplayUI;
     public CanvasGroup MainUI;
     public CanvasGroup RetryUI;
+    public CanvasGroup PauseScreen;
+    public Text HighscoreText;
 
     [Header("Background Colors")]
     public int CurrentColorIndex = 0;
     public Color[] Colors;
     public float ColorTimeout = 0;
     public float TransitionTime = 30f;
+    public bool Paused = false;
+
+    [HideInInspector]
+    public int CurrentScore = 0;
 
     private void Start()
     {
         Instance = this;
+        HighscoreText.text = PlayerPrefs.GetInt("HIGHSCORE", 0).ToString();
     }
 
     void ResetMatch()
     {
         print("RESETTING THINGS");
+        HighscoreText.text = PlayerPrefs.GetInt("HIGHSCORE", 0).ToString();
 
+        CurrentScore = 0;
         GameTime = 0f;
 
         PlayerController.Instance.gameObject.transform.position = Vector3.zero;
@@ -45,6 +55,21 @@ public class MatchManager : MonoBehaviour
         PlayerController.Instance.Health = 1f;
         Playing = true;
         Dead = false;
+    }
+
+    public void Pause()
+    {
+        // Pause the match
+        PauseScreen.alpha = 1f;
+        Time.timeScale = 0f;
+        PauseScreen.gameObject.SetActive(true);
+    }
+
+    public void Unpause()
+    {
+        PauseScreen.alpha = 0f;
+        Time.timeScale = 1f;
+        PauseScreen.gameObject.SetActive(false);
     }
 
     private void Update()

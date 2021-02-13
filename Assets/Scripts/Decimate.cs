@@ -34,6 +34,8 @@ public class Decimate : MonoBehaviour
 
             PlayerController.Instance.Health += 0.015f * (1 / (float)(CurrentIndex + 1));
 
+            MatchManager.Instance.CurrentScore += 10 + 5 * (CurrentIndex);
+
             Destroy(other.gameObject);
         }
         else if (other.tag == "Player")

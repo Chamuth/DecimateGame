@@ -33,10 +33,14 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Instance;
 
+    SpriteRenderer mySprite;
+
     private void Start()
     {
         Instance = this;
         myRB = GetComponent<Rigidbody>();
+
+        mySprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -45,65 +49,69 @@ public class PlayerController : MonoBehaviour
         CameraContainer.position = Vector3.LerpUnclamped(CameraContainer.position, transform.position, Time.deltaTime * 5f);
     }
 
-    bool LeftSet, RightSet = false;
-    Touch LeftTouch = new Touch();
-    Vector2 leftTouchStartPosition = Vector2.zero;
-    Touch RightTouch = new Touch();
-    Vector2 rightTouchStartPosition = Vector2.zero;
+    Rect left = new Rect(0, 0, Screen.width / 2, Screen.height);
+    Rect right = new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height);
+
+    Vector2 leftStart = Vector3.zero;
+    Vector2 rightStart = Vector2.zero;
+
+    bool shooting = false;
 
     private void Update()
     {
         if (!MatchManager.Instance.Dead)
         {
             #region Input Management
-            RightSet = false;
-            LeftSet = false;
-
             var horizontal = 0f;
             var vertical = 0f;
             var mouseDeltaX = 0f;
             var mouseDeltaY = 0f;
-            bool shooting = false;
 
             foreach (var touch in Input.touches)
             {
-                    if (touch.position.x > (Screen.width / 2))
+                if (left.Contains(touch.position))
+                {
+                    if (touch.phase == TouchPhase.Began)
                     {
-                        RightTouch = touch;
-                        if (touch.phase == TouchPhase.Began)
-                            leftTouchStartPosition = touch.position;
-
-                        RightSet = true;
+                        leftStart = touch.position;
+                    }
+                    else if (touch.phase == TouchPhase.Ended)
+                    {
+                        leftStart = Vector2.zero;
                     }
                     else
                     {
-                        LeftTouch = touch;
-                        if (touch.phase == TouchPhase.Began)
-                            rightTouchStartPosition = touch.position;
-                        LeftSet = true;
+                        var delta = Vector2.ClampMagnitude((touch.position - leftStart) / 25f, 1f);
+                        horizontal = delta.x;
+                        vertical = delta.y;
                     }
-            }
-
-
-            if (LeftSet)
-            {
-                horizontal = (LeftTouch.position - leftTouchStartPosition).normalized.x;
-                vertical = (LeftTouch.position - leftTouchStartPosition).normalized.y;
-            }
-
-            if (RightSet)
-            {
-                // currently touching 
-                mouseDeltaX = (RightTouch.deltaPosition - rightTouchStartPosition).normalized.x;
-                mouseDeltaY = (RightTouch.deltaPosition - rightTouchStartPosition).normalized.y;
-                shooting = true;
+                }
+                else if (right.Contains(touch.position))
+                {
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        rightStart = touch.position;
+                        shooting = true;
+                    }
+                    else if (touch.phase == TouchPhase.Ended)
+                    {
+                        rightStart = Vector2.zero;
+                        shooting = false;
+                    }
+                    else
+                    {
+                        var delta = Vector2.ClampMagnitude((touch.position - rightStart), 1f);
+                        mouseDeltaX = delta.x;
+                        mouseDeltaY = delta.y;
+                    }
+                }
             }
 
             #endregion
 
             #region Locomotion
-            myRB.AddForce(horizontal * transform.right * Time.deltaTime * (MovementSpeed + BoostedSpeed));
-            myRB.AddForce(vertical * transform.forward * Time.deltaTime * (MovementSpeed + BoostedSpeed));
+            myRB.AddForce(horizontal * Vector3.right * Time.deltaTime * (MovementSpeed + BoostedSpeed));
+            myRB.AddForce(vertical * Vector3.forward * Time.deltaTime * (MovementSpeed + BoostedSpeed));
 
             var angle = Mathf.Atan2(mouseDeltaY, -mouseDeltaX);
             transform.rotation = Quaternion.Euler(Vector3.up * Mathf.LerpAngle(transform.rotation.eulerAngles.y, angle * Mathf.Rad2Deg - 90f, Time.deltaTime * 6f));
@@ -133,11 +141,19 @@ public class PlayerController : MonoBehaviour
             if (Health <= 0)
             {
                 // Dead
+                if (MatchManager.Instance.CurrentScore > PlayerPrefs.GetInt("HIGHSCORE", 0))
+                {
+                    PlayerPrefs.SetInt("HIGHSCORE", MatchManager.Instance.CurrentScore);
+                }
+
+                // Reset the match
                 MatchManager.Instance.Dead = true;
                 MatchManager.Instance.Playing = false;
             }
 
             Health = Mathf.Clamp(Health, 0, 1);
+
+            mySprite.color = Color.Lerp(Color.white, Color.red, 1 - Health);
         }
     }
 
