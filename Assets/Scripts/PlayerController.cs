@@ -67,21 +67,21 @@ public class PlayerController : MonoBehaviour
 
             foreach (var touch in Input.touches)
             {
-                if (touch.phase == TouchPhase.Began)
-                {
                     if (touch.position.x > (Screen.width / 2))
                     {
                         RightTouch = touch;
-                        leftTouchStartPosition = touch.position;
+                        if (touch.phase == TouchPhase.Began)
+                            leftTouchStartPosition = touch.position;
+
                         RightSet = true;
                     }
                     else
                     {
                         LeftTouch = touch;
-                        rightTouchStartPosition = touch.position;
+                        if (touch.phase == TouchPhase.Began)
+                            rightTouchStartPosition = touch.position;
                         LeftSet = true;
                     }
-                }
             }
 
 
