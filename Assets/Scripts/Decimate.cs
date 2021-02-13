@@ -48,11 +48,13 @@ public class Decimate : MonoBehaviour
     }
 
     float randomSpeed = 0;
+    float randomTorque = 0;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         randomSpeed = Random.Range(0f, 2f);
+        randomTorque = Random.Range(-180f, 180f);
     }
 
     float scanningTimeout = 0.5f;
@@ -64,6 +66,9 @@ public class Decimate : MonoBehaviour
         // Swarm the player but randomly
         var pDirection = PlayerController.Instance.gameObject.transform.position - transform.position;
         rb.AddForce(pDirection.normalized * Time.deltaTime * (StartupSpeed * (1 + 0.25f * CurrentIndex + randomSpeed)) + escapeV * Time.deltaTime * 75f);
+
+        // Random rotation
+        transform.Rotate(Vector3.up * Time.deltaTime * randomTorque);
 
         if (scanningTimeout > 0)
         {
