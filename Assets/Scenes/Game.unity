@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.058580488, g: 0.06890177, b: 0.08012434, a: 1}
+  m_IndirectSpecularColor: {r: 0.055687428, g: 0.07166805, b: 0.08432517, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -899,8 +899,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -542.8, y: 259}
-  m_SizeDelta: {x: 128.8, y: 30}
+  m_AnchoredPosition: {x: -536.1, y: 259}
+  m_SizeDelta: {x: 142.1, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &555695937
 MonoBehaviour:
@@ -6454,10 +6454,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Spawnables:
   - Enemy: {fileID: 8115612472792896393, guid: 7815038a05765fa468f97099463064fb, type: 3}
-    Odds: 2
+    Odds: 1
   - Enemy: {fileID: 8204273649222625282, guid: d4aeac1e319c4de4bb3bd4961e50b177, type: 3}
     Odds: 2
   - Enemy: {fileID: 2948461214754580056, guid: ebb469385b68f9844a6e83650564bb70, type: 3}
+    Odds: 2
+  - Enemy: {fileID: 9133870549141128647, guid: 875fe8c650c2e3941aa2ffde38380f82, type: 3}
     Odds: 2
   Colors:
   - {r: 1, g: 0.42802835, b: 0, a: 1}
@@ -7429,7 +7431,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455044417}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

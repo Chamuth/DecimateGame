@@ -57,7 +57,7 @@ public class Decimate : MonoBehaviour
         randomTorque = Random.Range(-180f, 180f);
     }
 
-    float scanningTimeout = 0.5f;
+    float scanningTimeout = 2f;
     Vector3 escapeV = Vector3.zero;
     float oldTimer = 0f;
 
