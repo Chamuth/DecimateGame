@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +20,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("Emitters")]
     public Transform StandardEmitter;
+    public Transform[] DoubleEmitters;
+
+    [Header("Powerups")]
+    public float DoubleWeapons = 0f;
+    public float Shield = 0f;
+
+    [Header("Powerup UI Elements")]
+    public CanvasGroup DoubleWeaponIcon;
+    public Image DoubleWeaponProgress;
 
     [Header("Boost")]
     public float BoostTime = 2f;
@@ -155,23 +165,45 @@ public class PlayerController : MonoBehaviour
 
             mySprite.color = Color.Lerp(Color.white, Color.red, 1 - Health);
         }
+
+        #region Render Powerup UIs
+
+        #endregion
     }
 
     float shootingTimer = 0f;
     float shootingResetTimer = 0.025f;
 
+    // For double shooters
+    bool altShootIndex = false;
+
     void Shoot()
     {
         if (shootingTimer > 0)
         {
-            shootingTimer -= Time.deltaTime;
+            if (DoubleWeapons > 0)
+            {
+                // Shooting is 2 times faster
+                shootingTimer -= Time.deltaTime * 2f;
+            }
+            else
+            {
+                shootingTimer -= Time.deltaTime;
+            }
         }
         else
         {
             shootingTimer = shootingResetTimer;
 
-            // Actual shooting mechanic
-            var g = Instantiate(StandardBullet, StandardEmitter.position, transform.rotation);
+            if (DoubleWeapons > 0)
+            {
+                Instantiate(StandardBullet, (altShootIndex) ? DoubleEmitters[0].position : DoubleEmitters[1].position, transform.rotation);
+                DoubleWeapons -= 0.05f;
+            }
+            else
+            {
+                Instantiate(StandardBullet, StandardEmitter.position, transform.rotation);
+            }
         }
     }
 }
