@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GoogleMobileAds.Api;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,14 +30,33 @@ public class MatchManager : MonoBehaviour
     [HideInInspector]
     public int CurrentScore = 0;
 
+    string _INTERSTITIAL_AD = "ca-app-pub-5103739755612302/7820798390";
+    InterstitialAd interstitial;
+
     private void Start()
     {
         Instance = this;
         HighscoreText.text = PlayerPrefs.GetInt("HIGHSCORE", 0).ToString();
+        MobileAds.Initialize(initStatus => { });
+        ReloadAd();
     }
+
+    private void ReloadAd()
+    {
+        interstitial = new InterstitialAd(_INTERSTITIAL_AD);
+        var request = new AdRequest.Builder().Build();
+        interstitial.LoadAd(request);
+    }
+    
+    int _adCounter = 0;
 
     void ResetMatch()
     {
+        if (interstitial.IsLoaded() && _adCounter != 0)
+            interstitial.Show();
+
+        _adCounter++;
+
         print("RESETTING THINGS");
         HighscoreText.text = PlayerPrefs.GetInt("HIGHSCORE", 0).ToString();
 
@@ -55,6 +75,8 @@ public class MatchManager : MonoBehaviour
         PlayerController.Instance.Health = 1f;
         Playing = true;
         Dead = false;
+
+        ReloadAd();
     }
 
     public void Pause()

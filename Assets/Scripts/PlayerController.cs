@@ -116,7 +116,6 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-
             #endregion
 
             #region Locomotion
@@ -129,7 +128,7 @@ public class PlayerController : MonoBehaviour
 
             #region Shooting
             if (shooting)
-            {
+            {   
                 Shoot();
             }
 

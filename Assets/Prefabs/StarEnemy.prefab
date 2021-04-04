@@ -49,7 +49,7 @@ MonoBehaviour:
   CurrentIndex: 0
   Decimations: 05000000
   Health: 1
-  StartupSpeed: 1250
+  StartupSpeed: 2000
   SetColor: {r: 0, g: 0, b: 0, a: 0}
   ExplosionPrefab: {fileID: 6029910214449732640, guid: 3ffbd2d9401709c428fba24c5ff891bf,
     type: 3}

@@ -1,0 +1,21 @@
+[X] APP NAME 
+Decimate - Space Shape Shooter
+[X] SHORT DESCRIPTION (80)
+A Space Shooter game with beautiful colors and a lot of particles
+[ ] LONG DESCIRPTION (4000)
+Steer your ship in the endless colourful world of Decimate, Shoot down shapes coming to destroy your ship. The more time you survive and more enemy shapes you decimate you get more score.
+
+Features
+⬤ Addictive time killer
+⬤ Minimalistic design
+⬤ Thousands of particles on screen
+⬤ Nice looking random backgrounds
+[X] APP ICON
+512pxx512px
+[ ] FEATURE GRAPHIC
+1,024 px by 500 px
+[ ] VIDEO
+
+[ ] PHONE SCREENSHOTS (16:9)
+[ ] 7 inch TABLET SCREENSHOTS
+[ ] 10 inch TABLET SCREENSHOTS

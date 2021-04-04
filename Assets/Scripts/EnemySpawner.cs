@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 foreach (var spawn in Spawnables)
                 {
-                    yield return new WaitForSeconds(Random.Range(0, 5f) * spawn.Odds + 20f / (MatchManager.Instance.GameTime + 5f));
+                    yield return new WaitForSeconds(Random.Range(0, 3f) * spawn.Odds + 20f / (MatchManager.Instance.GameTime + 5f));
                     Spawn(spawn.Enemy);
                 }
             }
